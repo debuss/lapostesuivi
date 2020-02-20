@@ -59,8 +59,8 @@ $requests = [
 $responses = $app->callMultiple($requests);
 ```
 
-`LaPoste\Suivi\App::call` and `LaPoste\Suivi\App::callMultiple` return instances of `LaPoste\Suivi\Response`.
+`LaPoste\Suivi\App::call` and `LaPoste\Suivi\App::callMultiple` return instances of [`LaPoste\Suivi\Response`](https://github.com/debuss/lapostesuivi/blob/master/src/Suivi/Response.php).
 
 ## License
 
-The package is licensed under the MIT license. See [License File](https://github.com/debuss/LaPosteSuivi/LICENSE.md) for more information.
+The package is licensed under the MIT license. See [License File](https://github.com/debuss/lapostesuivi/blob/master/LICENSE.md) for more information.
