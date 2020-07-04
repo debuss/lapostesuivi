@@ -1,7 +1,10 @@
 <p align="center"><img src="https://www.dropbox.com/s/w571kzdajy2ydas/lapostesuivi.jpg?raw=1" alt="Logo" height="120" /></p>
 <h1 align="center">La Poste Suivi API</h1>
 <p align="center">The best way to track your La Poste, Colissimo and Chronopost packages.</p>
-
+<p align="center">
+<a href="//packagist.org/packages/debuss-a/lapostesuivi" rel="nofollow"><img src="https://camo.githubusercontent.com/e288bd60e94bb5bab053122e3f6e00b9b7796517/68747470733a2f2f706f7365722e707567782e6f72672f626f727363687068702f636f6e7461696e65722f76" alt="Latest Stable Version" data-canonical-src="https://poser.pugx.org/debuss-a/lapostesuivi/v" style="max-width:100%;"></a>
+<a href="//packagist.org/packages/debuss-a/lapostesuivi" rel="nofollow"><img src="https://camo.githubusercontent.com/ac6142268f0bb96e8ccf361ba832dbcbf86055ac/68747470733a2f2f706f7365722e707567782e6f72672f626f727363687068702f636f6e7461696e65722f6c6963656e7365" alt="License" data-canonical-src="https://poser.pugx.org/debuss-a/lapostesuivi/license" style="max-width:100%;"></a>
+</p><br/><br/>
 <p align="center"><img src="https://www.dropbox.com/s/60uc9xqq0f3mzl4/lapostesuivi_example.png?raw=1" alt="Example" /></p>
 
 ## What does it do ?
