@@ -2,6 +2,7 @@
 <h1 align="center">La Poste Suivi API</h1>
 <p align="center">The best way to track your La Poste, Colissimo and Chronopost packages.</p>
 <p align="center">
+<a href="//travis-ci.com/github/debuss/lapostesuivi" rel="nofollow"><img src="https://travis-ci.com/debuss/lapostesuivi.svg?branch=master" alt="Travis" style="max-width:100%;"></a>
 <a href="//packagist.org/packages/debuss-a/lapostesuivi" rel="nofollow"><img src="https://poser.pugx.org/debuss-a/lapostesuivi/v" alt="Version" style="max-width:100%;"></a>
 <a href="//packagist.org/packages/debuss-a/lapostesuivi" rel="nofollow"><img src="https://poser.pugx.org/debuss-a/lapostesuivi/license" alt="License" style="max-width:100%;"></a>
 </p><br/>
