@@ -8,7 +8,7 @@
  * @link https://developer.laposte.fr/products/suivi/2
  */
 
-namespace Laposte\Exception;
+namespace LaPoste\Exception;
 
 use Exception;
 

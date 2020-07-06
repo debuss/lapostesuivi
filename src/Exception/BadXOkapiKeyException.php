@@ -9,7 +9,7 @@
  * @noinspection SpellCheckingInspection
  */
 
-namespace Laposte\Exception;
+namespace LaPoste\Exception;
 
 use Exception;
 

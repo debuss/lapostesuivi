@@ -1,0 +1,6 @@
+{
+  "returnCode": 400,
+  "returnMessage": "Votre requête est incorrecte. Veuillez la ressaisir en respectant le format.",
+  "lang": "fr_FR",
+  "scope": "open"
+}

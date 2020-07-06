@@ -51,6 +51,9 @@ class Shipment
     /** @var ContextData */
     protected $context_data;
 
+    /** @var string */
+    protected $url;
+
     /**
      * @return string
      */
@@ -249,4 +252,22 @@ class Shipment
 
         $this->context_data = $context_data;
     }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl(string $url)
+    {
+        $this->url = $url;
+    }
+
+
 }

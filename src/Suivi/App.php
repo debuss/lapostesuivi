@@ -1,5 +1,4 @@
-<?php /** @noinspection ALL */
-
+<?php
 /**
  * La Poste Suivi API
  *
@@ -11,8 +10,9 @@
 
 namespace LaPoste\Suivi;
 
-use Laposte\Exception\BadXOkapiKeyException;
-use Laposte\Exception\ResponseDecodeException;
+use http\Exception\InvalidArgumentException;
+use LaPoste\Exception\BadXOkapiKeyException;
+use LaPoste\Exception\ResponseDecodeException;
 
 /**
  * Class App
@@ -57,7 +57,9 @@ class App
      */
     public function call(Request $request)
     {
-        return reset($this->callMultiple([$request]));
+        $response = $this->callMultiple([$request]);
+
+        return reset($response);
     }
 
     /**
@@ -73,6 +75,13 @@ class App
         $curl = curl_multi_init();
 
         foreach ($requests as $id => $request) {
+            if (!$request instanceof Request) {
+                throw new InvalidArgumentException(sprintf(
+                    'Expected a Request instance, "%s" provided...',
+                    is_object($request) ? get_class($request) : gettype($request)
+                ));
+            }
+
             $multi_curl[$id] = curl_init();
 
             curl_setopt($multi_curl[$id], CURLOPT_USERAGENT, self::USER_AGENT);
@@ -99,17 +108,27 @@ class App
             curl_multi_exec($curl, $index);
         } while ($index > 0);
 
-        foreach ($multi_curl as $key => $ch) {
-            $results[$key] = curl_multi_getcontent($ch);
+        foreach ($multi_curl as $ch) {
+            $results[] = curl_multi_getcontent($ch);
 
             curl_multi_remove_handle($curl, $ch);
         }
 
         curl_multi_close($curl);
 
+        return $this->prepareResponse($results);
+    }
+
+    /**
+     * @param array $results
+     * @return array
+     * @throws ResponseDecodeException
+     */
+    protected function prepareResponse($results)
+    {
         $responses = [];
 
-        foreach ($results as $key => $result) {
+        foreach ($results as $result) {
             $result = json_decode($result, true);
             if ($result === null) {
                 throw new ResponseDecodeException('Unable to json_decode response from the API.');
@@ -121,7 +140,7 @@ class App
                 $response->{'set'.ucfirst($parameter)}($value);
             }
 
-            if (!$response->getIdShip()) {
+            if (!$response->getIdShip() && $response->getReturnCode() == 200) {
                 $response->setIdShip($response->getShipment()->getIdShip());
             }
 
