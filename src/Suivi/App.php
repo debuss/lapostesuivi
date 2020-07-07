@@ -10,7 +10,7 @@
 
 namespace LaPoste\Suivi;
 
-use http\Exception\InvalidArgumentException;
+use InvalidArgumentException;
 use LaPoste\Exception\BadXOkapiKeyException;
 use LaPoste\Exception\ResponseDecodeException;
 
@@ -19,7 +19,7 @@ use LaPoste\Exception\ResponseDecodeException;
  *
  * @package LaPoste\Suivi
  */
-class App
+class App implements ApplicationInterface
 {
 
     const ENDPOINT = 'https://api.laposte.fr/suivi/v2/idships/';

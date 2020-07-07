@@ -185,6 +185,8 @@ class Response
      */
     public function getCurrentEvent()
     {
-        return reset($this->shipment->getEvent());
+        $events = $this->shipment->getEvent();
+
+        return reset($events);
     }
 }

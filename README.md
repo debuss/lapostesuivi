@@ -74,6 +74,75 @@ $responses = $app->callMultiple($requests);
 <ins>Note:</ins> in the case of `LaPoste\Suivi\App::callMultiple`, this package uses `curl_multi*` functions therefore all tracking numbers are tracked asynchronously.  
 This means the tracking of multiple packages is done at the same time instead of one by one, and it is much **MUCH!** faster.
 
+## Decorator
+
+The package is included with an `AppV1Decorator` decorator class that you can use to format the output of
+the v2 API to the v1 API.  
+
+```php
+$app = new \LaPoste\Suivi\AppV1Decorator(
+    new LaPoste\Suivi\App('YOUR_X-OKAPI-KEY_HERE')
+);
+
+$single_response = $app->call(new \LaPoste\Suivi\Request('6A18987970674'));
+
+$multiple_response = $app->callMultiple([
+    new \LaPoste\Suivi\Request('6A18987970674'),
+    new \LaPoste\Suivi\Request('6A18987970674'),
+    new \LaPoste\Suivi\Request('6A18987970674')
+]);
+```
+
+Result of `call` :
+```
+array (
+  'code' => '6A18987970674',
+  'date' => '06/07/2020',
+  'status' => 'LIVRE',
+  'message' => 'Votre colis est livré à votre gardien.',
+  'link' => 'https://www.laposte.fr/particulier/outils/suivre-vos-envois?code=6A18987970674',
+  'type' => 'Colissimo',
+)
+```
+
+Result of `callMultiple` :
+```
+array (
+  0 => array (
+    'data' => array (
+      'code' => '6A18987970674',
+      'date' => '06/07/2020',
+      'status' => 'LIVRE',
+      'message' => 'Votre colis est livré à votre gardien.',
+      'link' => 'https://www.laposte.fr/particulier/outils/suivre-vos-envois?code=6A18987970674',
+      'type' => 'Colissimo',
+    ),
+  ),
+  1 => array (
+    'data' => array (
+      'code' => '6A18987970674',
+      'date' => '06/07/2020',
+      'status' => 'LIVRE',
+      'message' => 'Votre colis est livré à votre gardien.',
+      'link' => 'https://www.laposte.fr/particulier/outils/suivre-vos-envois?code=6A18987970674',
+      'type' => 'Colissimo',
+    ),
+  ),
+  2 => array (
+    'data' => array (
+      'code' => '6A18987970674',
+      'date' => '06/07/2020',
+      'status' => 'LIVRE',
+      'message' => 'Votre colis est livré à votre gardien.',
+      'link' => 'https://www.laposte.fr/particulier/outils/suivre-vos-envois?code=6A18987970674',
+      'type' => 'Colissimo',
+    ),
+  ),
+)
+```
+
+Useful if you do not want to refactor all your code to the different v2 API !
+
 ## License
 
 The package is licensed under the MIT license. See [License File](https://github.com/debuss/lapostesuivi/blob/master/LICENSE.md) for more information.
