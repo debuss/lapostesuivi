@@ -26,7 +26,7 @@ class Response
     /** @var string */
     protected $scope;
 
-    /** @var int */
+    /** @var string */
     protected $code;
 
     /** @var int */
@@ -76,15 +76,15 @@ class Response
     /**
      * @return int
      */
-    public function getCode(): int
+    public function getCode(): string
     {
         return $this->code;
     }
 
     /**
-     * @param int $code
+     * @param string $code
      */
-    public function setCode(int $code): void
+    public function setCode(string $code): void
     {
         $this->code = $code;
     }
