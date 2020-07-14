@@ -29,6 +29,9 @@ class Response
     /** @var string */
     protected $code;
 
+    /** @var string */
+    protected $message;
+
     /** @var int */
     protected $return_code;
 
@@ -74,9 +77,9 @@ class Response
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getCode(): string
+    public function getCode()
     {
         return $this->code;
     }
@@ -84,9 +87,25 @@ class Response
     /**
      * @param string $code
      */
-    public function setCode(string $code): void
+    public function setCode($code)
     {
         $this->code = $code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
     }
 
     /**
