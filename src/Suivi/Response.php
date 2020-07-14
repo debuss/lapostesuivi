@@ -27,6 +27,9 @@ class Response
     protected $scope;
 
     /** @var int */
+    protected $code;
+
+    /** @var int */
     protected $return_code;
 
     /** @var string */
@@ -68,6 +71,22 @@ class Response
     public function setScope($scope)
     {
         $this->scope = $scope;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCode(): int
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param int $code
+     */
+    public function setCode(int $code): void
+    {
+        $this->code = $code;
     }
 
     /**
