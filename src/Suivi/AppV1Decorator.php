@@ -73,8 +73,8 @@ class AppV1Decorator implements ApplicationInterface
     {
         $responses = [];
 
-        foreach ($this->app->callMultiple($requests) as $response) {
-            $responses[] = $this->getFormattedResponse($response);
+        foreach ($this->app->callMultiple($requests) as $id => $response) {
+            $responses[$id] = $this->getFormattedResponse($response);
         }
 
         return $responses;
