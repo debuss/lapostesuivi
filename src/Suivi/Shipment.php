@@ -268,6 +268,4 @@ class Shipment
     {
         $this->url = $url;
     }
-
-
 }

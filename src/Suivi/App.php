@@ -108,8 +108,8 @@ class App implements ApplicationInterface
             curl_multi_exec($curl, $index);
         } while ($index > 0);
 
-        foreach ($multi_curl as $ch) {
-            $results[] = curl_multi_getcontent($ch);
+        foreach ($multi_curl as $id => $ch) {
+            $results[$id] = curl_multi_getcontent($ch);
 
             curl_multi_remove_handle($curl, $ch);
         }
@@ -128,7 +128,7 @@ class App implements ApplicationInterface
     {
         $responses = [];
 
-        foreach ($results as $result) {
+        foreach ($results as $id => $result) {
             $result = json_decode($result, true);
             if ($result === null) {
                 throw new ResponseDecodeException('Unable to json_decode response from the API.');
@@ -144,7 +144,7 @@ class App implements ApplicationInterface
                 $response->setIdShip($response->getShipment()->getIdShip());
             }
 
-            $responses[] = $response;
+            $responses[$id] = $response;
         }
 
         return $responses;
