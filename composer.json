@@ -3,6 +3,7 @@
   "description": "This API allows you to track your La Poste shipments in real time.",
   "minimum-stability": "stable",
   "license": "MIT",
+  "keywords": ["colissimo", "laposte", "poste", "suivi", "tracking"],
   "authors": [
     {
       "name": "Alexandre DEBUSSCHÈRE",
