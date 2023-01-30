@@ -12,6 +12,7 @@ namespace LaPoste\Suivi;
 
 use DateTime;
 use Exception;
+use InvalidArgumentException;
 
 /**
  * Class Shipment
@@ -175,6 +176,13 @@ class Shipment
         if (is_string($estim_date) && strlen($estim_date)) {
             $estim_date = new DateTime($estim_date);
         }
+
+        if (!$estim_date instanceof DateTime) {
+            throw new InvalidArgumentException(sprintf(
+                'Expected a string or an instance of DateTime, "%s" provided...',
+                is_object($estim_date) ? get_class($estim_date) : gettype($estim_date)
+            ));
+        }
         
         $this->estim_date = $estim_date;
     }
@@ -288,7 +296,7 @@ class Shipment
     /**
      * @param string $url
      */
-    public function setUrl(string $url)
+    public function setUrl($url)
     {
         $this->url = $url;
     }
