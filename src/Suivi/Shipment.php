@@ -12,6 +12,7 @@ namespace LaPoste\Suivi;
 
 use DateTime;
 use Exception;
+use InvalidArgumentException;
 
 /**
  * Class Shipment
@@ -38,6 +39,9 @@ class Shipment
 
     /** @var DateTime */
     protected $entry_date;
+    
+    /** @var DateTime */
+    protected $estim_date;
 
     /** @var DateTime */
     protected $delivery_date;
@@ -154,13 +158,41 @@ class Shipment
 
         $this->entry_date = $entry_date;
     }
+    
+    /**
+     * @return DateTime
+     */
+    public function getEstimDate()
+    {
+        return $this->estim_date;
+    }
+    
+    /**
+     * @param string $estim_date
+     * @throws Exception
+     */
+    public function setEstimDate($estim_date)
+    {
+        if (is_string($estim_date) && strlen($estim_date)) {
+            $estim_date = new DateTime($estim_date);
+        }
+
+        if (!$estim_date instanceof DateTime) {
+            throw new InvalidArgumentException(sprintf(
+                'Expected a string or an instance of DateTime, "%s" provided...',
+                is_object($estim_date) ? get_class($estim_date) : gettype($estim_date)
+            ));
+        }
+        
+        $this->estim_date = $estim_date;
+    }
 
     /**
      * @return DateTime
      */
     public function getDeliveryDate()
     {
-        return $this->entry_date;
+        return $this->delivery_date;
     }
 
     /**
@@ -173,7 +205,7 @@ class Shipment
             $delivery_date = new DateTime($delivery_date);
         }
 
-        $this->entry_date = $delivery_date;
+        $this->delivery_date = $delivery_date;
     }
 
     /**
@@ -264,7 +296,7 @@ class Shipment
     /**
      * @param string $url
      */
-    public function setUrl(string $url)
+    public function setUrl($url)
     {
         $this->url = $url;
     }
