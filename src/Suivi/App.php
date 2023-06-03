@@ -134,7 +134,7 @@ class App implements ApplicationInterface
                 throw new ResponseDecodeException('Unable to json_decode response from the API.');
             }
 
-            if ($result['code'] === 'SERVICE_UNAVAILABLE') {
+            if (isset($result['code']) && $result['code'] === 'SERVICE_UNAVAILABLE') {
                 throw new ResponseDecodeException('The service is currently unavailable (SERVICE_UNAVAILABLE).');
             }
 
