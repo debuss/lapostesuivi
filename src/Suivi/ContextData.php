@@ -32,7 +32,10 @@ class ContextData
 
     /** @var array */
     protected $partner;
-
+    
+    /** @var string */
+    protected $custom_cta;
+    
     /**
      * @return int[]
      */
@@ -111,5 +114,21 @@ class ContextData
     public function setPartner($partner)
     {
         $this->partner = $partner;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomCTA()
+    {
+        return $this->custom_cta;
+    }
+    
+    /**
+     * @param string $custom_cta
+     */
+    public function setCustomCTA($custom_cta)
+    {
+        $this->custom_cta = $custom_cta;
     }
 }
