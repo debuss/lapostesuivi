@@ -38,24 +38,9 @@ class Request
      */
     public function __construct($id, $lang = 'fr_FR', $ip_address = null)
     {
-        if (!is_string($id) || strlen($id) < 11 || strlen($id) > 15) {
-            throw new InvalidArgumentException('Tracking number (id) must be a string of 11, up to 15, alphanumeric characters.');
-        }
-
-        $allowed_lang_enum = ['fr_FR', 'de_DE', 'en_GB', 'es_ES', 'it_IT', 'nl_NL'];
-
-        if (!in_array($lang, $allowed_lang_enum)) {
-            throw new InvalidArgumentException(sprintf(
-                'Response language must be one of the following : %s.',
-                implode(', ', $allowed_lang_enum)
-            ));
-        }
-
-        $this->id = $id;
-        $this->lang = $lang;
-        $this->ip_address = filter_var($ip_address, FILTER_VALIDATE_IP) ?:
-            filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP) ?:
-                '123.123.123.123';
+        $this->setId($id);
+        $this->setLang($lang);
+        $this->setIpAddress($ip_address);
     }
 
     /**
@@ -71,6 +56,10 @@ class Request
      */
     public function setId($id)
     {
+        if (!is_string($id) || strlen($id) < 11 || strlen($id) > 15) {
+            throw new InvalidArgumentException('Tracking number (id) must be a string of 11, up to 15, alphanumeric characters.');
+        }
+
         $this->id = $id;
     }
 
@@ -87,6 +76,15 @@ class Request
      */
     public function setLang($lang)
     {
+        $allowed_lang_enum = ['fr_FR', 'de_DE', 'en_GB', 'es_ES', 'it_IT', 'nl_NL'];
+
+        if (!in_array($lang, $allowed_lang_enum)) {
+            throw new InvalidArgumentException(sprintf(
+                'Response language must be one of the following : %s.',
+                implode(', ', $allowed_lang_enum)
+            ));
+        }
+
         $this->lang = $lang;
     }
 
@@ -103,6 +101,8 @@ class Request
      */
     public function setIpAddress($ip_address)
     {
-        $this->ip_address = $ip_address;
+        $this->ip_address = filter_var($ip_address, FILTER_VALIDATE_IP) ?:
+            filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_VALIDATE_IP) ?:
+                '123.123.123.123';;
     }
 }

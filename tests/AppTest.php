@@ -2,8 +2,6 @@
 
 namespace LaPosteTest;
 
-require_once __DIR__.'/../vendor/autoload.php';
-
 use Laposte\Exception\BadXOkapiKeyException;
 use LaPoste\Exception\ResponseDecodeException;
 use LaPoste\Suivi\App;
@@ -15,6 +13,18 @@ use TypeError;
 
 class AppTest extends TestCase
 {
+
+    /** @var string */
+    protected $x_okapi_key;
+
+    /** @var AppMock */
+    protected $app;
+
+    public function setUp(): void
+    {
+        $this->x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
+        $this->app = new AppMock($this->x_okapi_key);
+    }
 
     public function testMissingXOkapiKeyThrowException()
     {
@@ -30,9 +40,7 @@ class AppTest extends TestCase
 
     public function testCallOk()
     {
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $app = new AppMock($x_okapi_key);
-        $response = $app->call(new Request('6A123456789'));
+        $response = $this->app->call(new Request('6A123456789'));
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals(200, $response->getReturnCode());
@@ -40,10 +48,8 @@ class AppTest extends TestCase
 
     public function testCallInvalidRequest()
     {
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $app = new AppMock($x_okapi_key);
-        $app->setCodeToReturn(400);
-        $response = $app->call(new Request('6A123456789'));
+        $this->app->setCodeToReturn(400);
+        $response = $this->app->call(new Request('6A123456789'));
 
         $this->assertInstanceOf(Response::class, $response);
         $this->assertEquals(400, $response->getReturnCode());
@@ -57,26 +63,38 @@ class AppTest extends TestCase
     {
         $this->expectException(ResponseDecodeException::class);
 
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $app = new AppMock($x_okapi_key);
-        $app->setCodeToReturn('000');
-        $app->call(new Request('6A123456789'));
+        $this->app->setCodeToReturn('000');
+        $this->app->call(new Request('6A123456789'));
+    }
+
+    public function testCallWithTooManyRequestsException()
+    {
+        $this->expectException(ResponseDecodeException::class);
+        $this->expectExceptionCode(429);
+
+        $this->app->setCodeToReturn('429');
+        $this->app->call(new Request('6A123456789'));
+    }
+
+    public function testCallWithServiceUnavailableException()
+    {
+        $this->expectException(ResponseDecodeException::class);
+        $this->expectExceptionCode(503);
+
+        $this->app->setCodeToReturn('503');
+        $this->app->call(new Request('6A123456789'));
     }
 
     public function testCallWithoutRequestObjectThrowException()
     {
         $this->expectException(TypeError::class);
 
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $app = new AppMock($x_okapi_key);
-        $app->call('6A123456789');
+        $this->app->call('6A123456789');
     }
 
     public function testCallMultiple()
     {
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $app = new AppMock($x_okapi_key);
-        $response = $app->callMultiple([
+        $response = $this->app->callMultiple([
             new Request('6A123456789'),
             new Request('6A987654321'),
             new Request('6A147258369')
