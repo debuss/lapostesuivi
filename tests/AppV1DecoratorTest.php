@@ -3,16 +3,35 @@
  * @author debuss-a
  */
 
-namespace LaPoste\Suivi;
+namespace LaPosteTest;
 
 use LaPoste\Exception\BadXOkapiKeyException;
 use LaPoste\Exception\ResponseDecodeException;
+use LaPoste\Suivi\App;
+use LaPoste\Suivi\AppV1Decorator;
+use LaPoste\Suivi\Request;
 use LaPosteTest\Mock\AppMock;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
 class AppV1DecoratorTest extends TestCase
 {
+
+    /** @var string */
+    protected $x_okapi_key;
+
+    /** @var AppV1Decorator */
+    protected $app;
+
+    /** @var AppMock */
+    protected $mock;
+
+    public function setUp(): void
+    {
+        $this->x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
+        $this->app = new AppV1Decorator(new AppMock($this->x_okapi_key));
+        $this->mock = new AppMock($this->x_okapi_key);
+    }
 
     public function testMissingXOkapiKeyThrowException()
     {
@@ -28,9 +47,7 @@ class AppV1DecoratorTest extends TestCase
 
     public function testCallOk()
     {
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $app = new AppV1Decorator(new AppMock($x_okapi_key));
-        $response = $app->call(new Request('6A18987970674'));
+        $response = $this->app->call(new Request('6A18987970674'));
 
         $this->assertIsArray($response);
         $this->assertEquals('6A18987970674', $response['code']);
@@ -42,13 +59,11 @@ class AppV1DecoratorTest extends TestCase
         $this->assertArrayHasKey('type', $response);
     }
 
-    public function testCallInvalidRequest()
+    public function testCallBadRequest()
     {
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $mock = new AppMock($x_okapi_key);
-        $mock->setCodeToReturn(400);
+        $this->mock->setCodeToReturn(400);
 
-        $app = new AppV1Decorator($mock);
+        $app = new AppV1Decorator($this->mock);
         $response = $app->call(new Request('6A123456789'));
 
         $this->assertIsArray($response);
@@ -58,15 +73,69 @@ class AppV1DecoratorTest extends TestCase
         $this->assertEquals('BAD_REQUEST', $response['code']);
     }
 
+    public function testCallAuthorizedRequest()
+    {
+        $this->mock->setCodeToReturn(401);
+
+        $app = new AppV1Decorator($this->mock);
+        $response = $app->call(new Request('6A123456789'));
+
+        $this->assertIsArray($response);
+        $this->assertCount(2, $response);
+        $this->assertArrayHasKey('code', $response);
+        $this->assertArrayHasKey('message', $response);
+        $this->assertEquals('UNAUTHORIZED', $response['code']);
+    }
+
+    public function testCallResourceNotFoundRequest()
+    {
+        $this->mock->setCodeToReturn(404);
+
+        $app = new AppV1Decorator($this->mock);
+        $response = $app->call(new Request('6A123456789'));
+
+        $this->assertIsArray($response);
+        $this->assertCount(2, $response);
+        $this->assertArrayHasKey('code', $response);
+        $this->assertArrayHasKey('message', $response);
+        $this->assertEquals('RESOURCE_NOT_FOUND', $response['code']);
+    }
+
+    public function testCallInternalServerErrorRequest()
+    {
+        $this->mock->setCodeToReturn(500);
+
+        $app = new AppV1Decorator($this->mock);
+        $response = $app->call(new Request('6A123456789'));
+
+        $this->assertIsArray($response);
+        $this->assertCount(2, $response);
+        $this->assertArrayHasKey('code', $response);
+        $this->assertArrayHasKey('message', $response);
+        $this->assertEquals('INTERNAL_SERVER_ERROR', $response['code']);
+    }
+
+    public function testCallGatewayTimeoutRequest()
+    {
+        $this->mock->setCodeToReturn(504);
+
+        $app = new AppV1Decorator($this->mock);
+        $response = $app->call(new Request('6A123456789'));
+
+        $this->assertIsArray($response);
+        $this->assertCount(2, $response);
+        $this->assertArrayHasKey('code', $response);
+        $this->assertArrayHasKey('message', $response);
+        $this->assertEquals('GATEWAY_TIMEOUT', $response['code']);
+    }
+
     public function testCallWithDecodeException()
     {
         $this->expectException(ResponseDecodeException::class);
 
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $mock = new AppMock($x_okapi_key);
-        $mock->setCodeToReturn('000');
+        $this->mock->setCodeToReturn('000');
 
-        $app = new AppV1Decorator($mock);
+        $app = new AppV1Decorator($this->mock);
         $app->call(new Request('6A123456789'));
     }
 
@@ -74,17 +143,12 @@ class AppV1DecoratorTest extends TestCase
     {
         $this->expectException(TypeError::class);
 
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $app = new AppV1Decorator(new AppMock($x_okapi_key));
-        $app->call('6A123456789');
+        $this->app->call('6A123456789');
     }
 
     public function testCallMultiple()
     {
-        $x_okapi_key = '1234567891234567891234567891234512345678912345678912345678912345';
-        $app = new AppV1Decorator(new AppMock($x_okapi_key));
-
-        $responses = $app->callMultiple([
+        $responses = $this->app->callMultiple([
             new Request('6A123456789'),
             new Request('6A987654321'),
             new Request('6A147258369')

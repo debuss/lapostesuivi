@@ -1,0 +1,4 @@
+{
+  "code": "TOO_MANY_REQUESTS",
+  "message": "Rate limited, max quota reached (100 calls per 1s) (TOO_MANY_REQUESTS)."
+}
