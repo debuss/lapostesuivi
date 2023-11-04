@@ -10,7 +10,6 @@
 
 namespace LaPoste\Suivi;
 
-use DateTime;
 use LaPoste\Exception\ResponseDecodeException;
 
 /**
@@ -100,7 +99,6 @@ class AppV1Decorator implements ApplicationInterface
                         'type' => ucfirst($response->getShipment()->getProduct())
                     ]
                 ];
-                break;
 
             case 400:
                 return [
@@ -109,7 +107,6 @@ class AppV1Decorator implements ApplicationInterface
                         'message' => $response->getReturnMessage()
                     ]
                 ];
-                break;
 
             case 401:
                 return [
@@ -118,7 +115,6 @@ class AppV1Decorator implements ApplicationInterface
                         'message' => $response->getReturnMessage()
                     ]
                 ];
-                break;
 
             case 404:
                 return [
@@ -127,7 +123,6 @@ class AppV1Decorator implements ApplicationInterface
                         'message' => $response->getReturnMessage()
                     ]
                 ];
-                break;
 
             case 500:
                 return [
@@ -136,7 +131,6 @@ class AppV1Decorator implements ApplicationInterface
                         'message' => $response->getReturnMessage()
                     ]
                 ];
-                break;
 
             case 504:
                 return [
@@ -145,7 +139,6 @@ class AppV1Decorator implements ApplicationInterface
                         'message' => $response->getReturnMessage()
                     ]
                 ];
-                break;
 
             default:
                 return [
