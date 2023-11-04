@@ -131,11 +131,16 @@ class App implements ApplicationInterface
         foreach ($results as $id => $result) {
             $result = json_decode($result, true);
             if ($result === null) {
-                throw new ResponseDecodeException('Unable to json_decode response from the API.');
+                throw new ResponseDecodeException('Unable to json_decode response from the API.', 400);
             }
 
-            if (isset($result['code']) && $result['code'] === 'SERVICE_UNAVAILABLE') {
-                throw new ResponseDecodeException('The service is currently unavailable (SERVICE_UNAVAILABLE).');
+            if (isset($result['code'])) {
+                if ($result['code'] === 'TOO_MANY_REQUESTS') {
+                    throw new ResponseDecodeException('Rate limited, max quota reached (100 calls per 1s) (TOO_MANY_REQUESTS).', 429);
+                }
+                if ($result['code'] === 'SERVICE_UNAVAILABLE') {
+                    throw new ResponseDecodeException('The service is currently unavailable (SERVICE_UNAVAILABLE).', 503);
+                }
             }
 
             $response = new Response();
