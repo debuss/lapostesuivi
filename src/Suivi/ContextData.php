@@ -23,6 +23,12 @@ class ContextData
 
     /** @var array */
     protected $removal_point;
+    
+    /** @var string **/
+    protected $locomotion_mode;
+    
+    /** @var string **/
+    protected $energy_class_code;
 
     /** @var string */
     protected $origin_country;
@@ -68,6 +74,38 @@ class ContextData
         $this->removal_point = $removal_oint;
     }
 
+    /**
+     * @return string
+     */
+    public function getLocomotionMode()
+    {
+        return $this->locomotion_mode;
+    }
+    
+    /**
+     * @param string
+     */
+    public function setLocomotionMode($locomotion_mode)
+    {
+        $this->locomotion_mode = $locomotion_mode;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getEnergyClassCode()
+    {
+        return $this->energy_class_code;
+    }
+    
+    /**
+     * @param string
+     */
+    public function setEnergyClassCode($energy_class_code)
+    {
+        $this->energy_class_code = $energy_class_code;
+    }
+    
     /**
      * @return string
      */

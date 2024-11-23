@@ -37,6 +37,9 @@ class Response
 
     /** @var string */
     protected $return_message;
+    
+    /** @var string */
+    protected $technical_message;
 
     /** @var string */
     protected $id_ship;
@@ -131,6 +134,14 @@ class Response
     {
         return $this->return_message;
     }
+    
+    /**
+     * @return string
+     */
+    public function getTechnicalMessage()
+    {
+        return $this->technical_message;
+    }
 
     /**
      * @param $return_message
@@ -139,6 +150,14 @@ class Response
     {
         $this->return_message = $return_message;
     }
+    
+    /**
+     * @param string
+     */
+    /*public function setTechnicalMessage($technical_message)
+    {
+        $this->technical_message = $technical_message;
+    }*/
 
     /**
      * @return string

@@ -279,7 +279,7 @@ class Shipment
     {
         $context_data = new ContextData();
         foreach ($data as $parameter => $value) {
-            $context_data->{'set'.$parameter}($value);
+            $context_data->{'set'.ucfirst($parameter)}($value);
         }
 
         $this->context_data = $context_data;
